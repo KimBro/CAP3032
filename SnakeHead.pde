@@ -27,7 +27,7 @@ class SnakeHead{ // name
   
   // methods
   void display(){  // runs methods and displays snake head
-    offset = int((snakeSize/2)*(2/snakeSpeed)); // updates offset
+    offset = int((snakeSize)*(1/snakeSpeed)); // updates offset
     noFill();
     noStroke();
     ellipse(x,y,snakeSize,snakeSize);
@@ -111,7 +111,7 @@ class SnakeHead{ // name
     while (segments[i] != null)
     {
       i++;
-    }    
+    }
     
     segments[i] = new SnakeBody(xArray[i]*offset,yArray[i]*offset,i);
     segments[i+1] = new SnakeBody(xArray[i+1]*offset,yArray[i+1]*offset,i);

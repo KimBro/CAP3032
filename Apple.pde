@@ -3,13 +3,15 @@ class Apple{ // name
   // variables
   int fallNumber; // stores a number that checks if apple should fall
   boolean fallen; // true is apple has fallen
-  int appleDiameter;
-  float appleX;
-  float appleY;
+  int appleDiameter, appleMin;
+  float appleX,appleY;
+  PImage apple;
   
   // constructor
   Apple(){ // initialize
     fallen = false;
+    apple = loadImage("Apple.png");
+    appleMin = snakeSize + 5;
   }
   
   // methods
@@ -21,28 +23,26 @@ class Apple{ // name
         appleX = random(width);
         appleY = random(height); // set location of apple when it falls
         appleDiameter = width/2; // starts apple at large size
-        
       }
     }
   }
 
   
   void display(){ // draws the apple
-    stroke(0);
-    fill(255,0,0); // red color
-    ellipse(appleX,appleY,appleDiameter,appleDiameter);
-    if(appleDiameter > snakeSize){
+    image(apple,appleX,appleY,appleDiameter,appleDiameter);
+    if(appleDiameter > appleMin){
       appleDiameter -= 5; // shrinks apple size to give falling effect
     }else{
-      appleDiameter = snakeSize;
+      appleDiameter = appleMin;
       collisionCheck();
     }
   }
   
   void collisionCheck(){
-      if(dist(s.x,s.y,appleX,appleY) < snakeSize){ // collision detection to see if apple is obtained
+      if(dist(s.x,s.y,appleX,appleY) < appleMin){ // collision detection to see if apple is obtained
         s.addBody();
         fallen = false;
+        score += 200*multiplier;
       }
   }
   

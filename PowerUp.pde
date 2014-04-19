@@ -8,11 +8,14 @@ class PowerUp{ // name
   float pUpY;
   int type;
   int time1, time2;
+  PImage arrowB, arrowY;
   
   // constructor
   PowerUp(){ // initialize
     shown = false;
-    pUpDiameter = snakeSize;
+    pUpDiameter = snakeSize + 5;
+    arrowB = loadImage("ArrowB.png");
+    arrowY = loadImage("ArrowY.png");
   }
   
   // methods
@@ -26,16 +29,38 @@ class PowerUp{ // name
           pUpY = random(height); // set location
         }
         type = (int)random(4); // randomizes the effect
+        
+        if(snakeSize == 5 && type == 1){ // ensures that our snake doesn't have a size of zero
+          type = 0;
+        }
+        if(snakeSpeed == 2 && type == 3){
+          type = 2;
+        }
+        
         time1 = frameCount;
       }
     }
   }
   
   void display(){ // draws the powerup
-    fill(0,0,255); // blue color
-    stroke(0);
-    pUpDiameter = snakeSize;
-    ellipse(pUpX,pUpY,pUpDiameter,pUpDiameter);
+    imageMode(CENTER);
+    if(type == 0){
+      image(arrowB,pUpX,pUpY,pUpDiameter,pUpDiameter);
+    }else if(type == 1){
+      pushMatrix();
+      translate(pUpX,pUpY);
+      rotate(radians(180));
+      image(arrowB,0,0,pUpDiameter,pUpDiameter);
+      popMatrix();
+    }else if(type == 2){
+      image(arrowY,pUpX,pUpY,pUpDiameter,pUpDiameter);
+    }else{
+      pushMatrix();
+      translate(pUpX,pUpY);
+      rotate(radians(180));
+      image(arrowY,0,0,pUpDiameter,pUpDiameter);
+      popMatrix();
+    }
     collisionCheck();
   }
   
@@ -44,15 +69,16 @@ class PowerUp{ // name
         shown = false;
         if(type == 0){ // increases size
           snakeSize += 5;
+          multiplier += .25;
         }else if(type == 1){ // decreases size
-          if(snakeSize == 5){ // ensures that our snake doesn't have a size of zero
-            snakeSize += 10;
-          }
           snakeSize -= 5;
+          multiplier -= .25;
         }else if(type == 2){ // increases speed
           snakeSpeed += 1;
+          multiplier += .25;
         }else if(type == 3){ // decreases speed
           snakeSpeed -= 1;
+          multiplier -= .25;
         }
         time2 = frameCount;
       }
